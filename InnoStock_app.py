@@ -60,6 +60,10 @@ for i, col in enumerate(criteria):
         key=f"impact_{i}"
     )
     impact.append("+" if "Benefit" in selected else "-")
+st.subheader("Select Impact for Each Criterion")
+impact = []
+for col in criteria:
+    impact.append(st.selectbox(f"Impact of {col}", options=["+", "-"], index=0 if "Cost" not in col else 1))
 
 # Step 1: Normalize using min-max scaling
 st.subheader("Step 1: Min-Max Normalization")
