@@ -59,6 +59,17 @@ for i, col in enumerate(criteria):
         key=f"impact_{i}"
     )
     impact.append("+" if "Benefit" in selected else "-")
+# Input impact — user controlled
+st.subheader("Select Impact for Each Criterion")
+impact = []
+for col in criteria:
+    selected = st.radio(
+        f"Is '{col}' a Benefit or Cost Criterion?",
+        options=["Benefit (+)", "Cost (-)"],
+        index=0,
+        horizontal=True
+    )
+    impact.append("+" if "Benefit" in selected else "-")
 
 # Step 1: Normalize using min-max scaling
 st.subheader("Step 1: Min-Max Normalization")
