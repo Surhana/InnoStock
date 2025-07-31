@@ -72,7 +72,7 @@ for i, col in enumerate(criteria):
         normalized[col] = (data[col] - x_min) / (x_max - x_min)
     else:  # Cost
         normalized[col] = (x_max - data[col]) / (x_max - x_min)
-st.dataframe(normalized)
+
 
 # Step 2: Weighted Normalized Matrix
 st.subheader("Step 2: Weighted Normalized Matrix")
