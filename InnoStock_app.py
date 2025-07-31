@@ -90,4 +90,5 @@ utility = utility.sort_values(by="MAUT_Score", ascending=False).reset_index(drop
 
 # Highlight the top-ranked stock
 def highlight_top(row):
-    return ['background-color: lightgre]()
+    return ['background-color: lightgreen'] * len(row) if row.name == 0 else [''] * len(row)
+
