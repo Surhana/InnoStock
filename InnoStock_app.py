@@ -1,7 +1,7 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from io import BytesIO
 
 # Title and description
@@ -93,6 +93,14 @@ def highlight_top(row):
     return ['background-color: lightgreen'] * len(row) if row.name == 0 else [''] * len(row)
 
 st.dataframe(utility.style.apply(highlight_top, axis=1))
+
+# Bar chart for MAUT Scores
+st.subheader("MAUT Scores Visualization")
+fig, ax = plt.subplots()
+ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
+ax.set_xlabel('MAUT Score')
+ax.set_title('Stock Ranking Based on MAUT Score')
+st.pyplot(fig)
 
 # Download Results as CSV
 st.subheader("Download Result")
