@@ -1,4 +1,4 @@
-import streamlit as st  
+import streamlit as st   
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -49,7 +49,7 @@ if round(sum(weights), 3) != 1.0:
     st.warning("⚠️ The weights must sum to 1. Please adjust.")
 
 # Input impact — user controlled (radio buttons with unique keys)
-st.subheader("Select Impact for Each Criterion")
+st.subheader("Select Each Criterion")
 impact = []
 for i, col in enumerate(criteria):
     selected = st.radio(
@@ -121,7 +121,13 @@ ax.set_title('Stock Ranking Based on MAUT Score')
 st.pyplot(fig)
 
 # Download the results as CSV
-st.subheader("Download Result")
+st.subheader("Download Full Results")
 def convert_df(df): return df.to_csv(index=False).encode('utf-8')
-csv = convert_df(utility)
-st.download_button("Download Results as CSV", csv, "maut_stock_results.csv", "text/csv")
+
+# Combine all steps in a single DataFrame
+full_results = pd.concat([data, normalized, weighted, utility['MAUT_Score']], axis=1)
+full_results.columns = list(data.columns) + [f"Normalized {col}" for col in data.columns] + [f"Weighted {col}" for col in data.columns] + ["MAUT_Score"]
+
+# Convert to CSV for download
+csv = convert_df(full_results)
+st.download_button("Download Full Results as CSV", csv, "full_maut_stock_results.csv", "text/csv")
