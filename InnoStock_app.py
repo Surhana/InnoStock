@@ -68,14 +68,14 @@ normalized = data.copy()
 for i, col in enumerate(criteria):
     norm = data[col] / np.sqrt((data[col]**2).sum())
     normalized[col] = norm
-st.dataframe(normalized)
+st.dataframe(normalized.round(3))  # Round to 3 decimal places
 
 # Weighted Normalized Matrix
 st.subheader("Step 2: Weighted Normalized Matrix")
 weighted = normalized.copy()
 for i, col in enumerate(criteria):
     weighted[col] = weighted[col] * weights[i]
-st.dataframe(weighted)
+st.dataframe(weighted.round(3))  # Round to 3 decimal places
 
 # MAUT Utility Scores and Ranking
 st.subheader("Step 3: MAUT Scores and Ranking")
@@ -83,7 +83,7 @@ utility = weighted.copy()
 for i, col in enumerate(criteria):
     if impact[i] == "-":
         utility[col] = 1 - utility[col]
-utility["MAUT_Score"] = utility.sum(axis=1)
+utility["MAUT_Score"] = utility.sum(axis=1).round(3)  # Round MAUT score to 3 decimal places
 utility["Stock"] = stocks
 utility = utility[["Stock", "MAUT_Score"]]
 utility = utility.sort_values(by="MAUT_Score", ascending=False).reset_index(drop=True)
