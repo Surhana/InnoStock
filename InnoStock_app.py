@@ -113,7 +113,7 @@ def highlight_top(row):
 st.dataframe(utility.style.apply(highlight_top, axis=1))
 
 # Display the final MAUT Scores in a bar chart
-st.subheader("MAUT Scores Visualization")
+st.subheader("Ranking the Chart")
 fig, ax = plt.subplots()
 ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
 ax.set_xlabel('MAUT Score')
