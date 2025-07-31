@@ -83,16 +83,11 @@ for i, col in enumerate(criteria):
 # ✅ Display normalized matrix
 st.dataframe(normalized)
 
-# Step 2: Weighted Normalized Matrix (Corrected)
+# Step 2: Weighted Normalized Matrix
 st.subheader("Step 2: Weighted Normalized Matrix")
 weighted = normalized.copy()
-
-# Debugging: Checking how the weights are applied
 for i, col in enumerate(criteria):
-    # Debug: Check each column after applying weights
-    weighted[col] = normalized[col] * weights[i]
-    st.write(f"After applying weight {weights[i]} to {col}, results in: {weighted[col]}")
-
+    weighted[col] = weighted[col] * weights[i]
 st.dataframe(weighted)
 
 # Step 3: MAUT Score and Ranking
