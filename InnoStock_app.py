@@ -64,14 +64,20 @@ for i, col in enumerate(criteria):
 # Step 1: Normalize using min-max scaling
 st.subheader("Step 1: Min-Max Normalization")
 normalized = data.copy()
+
+# Debugging normalization step
 for i, col in enumerate(criteria):
     x_min = data[col].min()
     x_max = data[col].max()
+    
+    # Debug: Display min, max and the calculation for normalization
+    st.write(f"Column: {col}, Min: {x_min}, Max: {x_max}")
+    
     if x_max == x_min:
         normalized[col] = 1  # Avoid division by 0
-    elif impact[i] == '+':
+    elif impact[i] == '+':  # Benefit criteria
         normalized[col] = (data[col] - x_min) / (x_max - x_min)
-    else:  # Cost
+    else:  # Cost criteria
         normalized[col] = (x_max - data[col]) / (x_max - x_min)
 
 # ✅ Display normalized matrix
