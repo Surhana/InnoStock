@@ -49,7 +49,7 @@ if round(sum(weights), 3) != 1.0:
     st.warning("⚠️ The weights must sum to 1. Please adjust.")
 
 # Input impact — user controlled (radio buttons with unique keys)
-st.subheader("Select Impact for Each Criterion")
+st.subheader("Select Each Criterion")
 impact = []
 for i, col in enumerate(criteria):
     selected = st.radio(
