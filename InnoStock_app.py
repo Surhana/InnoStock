@@ -49,7 +49,7 @@ if round(sum(weights), 3) != 1.0:
     st.warning("⚠️ The weights must sum to 1. Please adjust.")
 
 # Input impact — user controlled (radio buttons with unique keys)
-st.subheader("Select Each Criterion")
+st.subheader("Select Impact for Each Criterion")
 impact = []
 for i, col in enumerate(criteria):
     selected = st.radio(
@@ -75,7 +75,8 @@ for i, col in enumerate(criteria):
     else:  # Cost criteria
         normalized[col] = (x_max - data[col]) / (x_max - x_min)
 
-# ✅ Display normalized matrix
+# Display normalized matrix
+st.subheader("Normalized Data")
 st.dataframe(normalized)
 
 # Step 2: Weighted Normalized Matrix
@@ -84,6 +85,8 @@ weighted = normalized.copy()
 for i, col in enumerate(criteria):
     weighted[col] = weighted[col] * weights[i]
 
+# Display weighted normalized matrix
+st.subheader("Weighted Normalized Data")
 st.dataframe(weighted)
 
 # Step 3: MAUT Score and Ranking
@@ -112,19 +115,19 @@ def highlight_top(row):
 
 st.dataframe(utility.style.apply(highlight_top, axis=1))
 
-# Display the final MAUT Scores in a bar chart
-st.subheader("Ranking the Chart")
+# **Ranking Chart**
+st.subheader("Ranking the Stocks Based on MAUT Scores")
 fig, ax = plt.subplots()
 ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
 ax.set_xlabel('MAUT Score')
 ax.set_title('Stock Ranking Based on MAUT Score')
 st.pyplot(fig)
 
-# Download the results as CSV
+# Download Full Results as CSV
 st.subheader("Download Full Results")
 def convert_df(df): return df.to_csv(index=False).encode('utf-8')
 
-# Combine all steps in a single DataFrame
+# Combine all steps in a single DataFrame for download
 full_results = pd.concat([data, normalized, weighted, utility['MAUT_Score']], axis=1)
 full_results.columns = list(data.columns) + [f"Normalized {col}" for col in data.columns] + [f"Weighted {col}" for col in data.columns] + ["MAUT_Score"]
 
