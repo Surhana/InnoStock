@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st  
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,13 +41,14 @@ data = df.iloc[:, 1:].astype(float)
 st.subheader("Input Weights (must sum to 1)")
 weights = []
 for i, col in enumerate(criteria):
-    weight = st.number_input(f"Weight for {col}", min_value=0.0, max_value=1.0, value=round(1/len(criteria), 3), step=0.001)
+    weight = st.number_input(f"Weight for {col}", min_value=0.0, max_value=1.0,
+                             value=round(1/len(criteria), 3), step=0.001)
     weights.append(weight)
 
 if round(sum(weights), 3) != 1.0:
     st.warning("⚠️ The weights must sum to 1. Please adjust.")
 
-# Input impact — fixed with unique keys
+# Input impact — user controlled (radio buttons with unique keys)
 st.subheader("Select Impact for Each Criterion")
 impact = []
 for i, col in enumerate(criteria):
@@ -59,13 +60,6 @@ for i, col in enumerate(criteria):
         key=f"impact_{i}"
     )
     impact.append("+" if "Benefit" in selected else "-")
-    
-# Input impact
-st.subheader("Select Impact for Each Criterion")
-impact = []
-for col in criteria:
-    impact.append(st.selectbox(f"Impact of {col}", ["+", "-"], index=0 if "Price" not in col and "Ratio" not in col else 1))
-
 
 # Step 1: Normalize using min-max scaling
 st.subheader("Step 1: Min-Max Normalization")
@@ -80,6 +74,8 @@ for i, col in enumerate(criteria):
     else:  # Cost
         normalized[col] = (x_max - data[col]) / (x_max - x_min)
 
+# ✅ Display normalized matrix
+st.dataframe(normalized)
 
 # Step 2: Weighted Normalized Matrix
 st.subheader("Step 2: Weighted Normalized Matrix")
