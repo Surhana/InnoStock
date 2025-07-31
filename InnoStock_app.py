@@ -49,7 +49,7 @@ data = df.iloc[:, 1:].astype(float)
 st.subheader("Input Weights (must sum to 1)")
 weights = []
 for i, col in enumerate(criteria):
-    weight = st.number_input(f"Weight for {col}", min_value=0.0, max_value=1.0, value=1/len(criteria), step=0.01)
+    weight = st.number_input(f"Weight for {col}", min_value=0.0, max_value=1.0, value=1/len(criteria), step=0.001)  # Step changed to 0.001
     weights.append(weight)
 
 # Ensure weights sum to 1
@@ -90,22 +90,4 @@ utility = utility.sort_values(by="MAUT_Score", ascending=False).reset_index(drop
 
 # Highlight the top-ranked stock
 def highlight_top(row):
-    return ['background-color: lightgreen'] * len(row) if row.name == 0 else [''] * len(row)
-
-st.dataframe(utility.style.apply(highlight_top, axis=1))
-
-# Bar chart for MAUT Scores
-st.subheader("MAUT Scores Visualization")
-fig, ax = plt.subplots()
-ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
-ax.set_xlabel('MAUT Score')
-ax.set_title('Stock Ranking Based on MAUT Score')
-st.pyplot(fig)
-
-# Download Results as CSV
-st.subheader("Download Result")
-def convert_df(df):
-    return df.to_csv(index=False).encode('utf-8')
-
-csv = convert_df(utility)
-st.download_button("Download Results as CSV", csv, "inno_stock_results.csv", "text/csv")
+    return ['background-color: lightgre]()
