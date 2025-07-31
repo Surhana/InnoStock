@@ -1,7 +1,8 @@
-import streamlit as st  
+import streamlit as st   
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 # Title and description
 st.title("InnoStock: Big Data-Powered MAUT Stock Selection System")
@@ -60,10 +61,6 @@ for i, col in enumerate(criteria):
         key=f"impact_{i}"
     )
     impact.append("+" if "Benefit" in selected else "-")
-st.subheader("Select Impact for Each Criterion")
-impact = []
-for col in criteria:
-    impact.append(st.selectbox(f"Impact of {col}", options=["+", "-"], index=0 if "Cost" not in col else 1))
 
 # Step 1: Normalize using min-max scaling
 st.subheader("Step 1: Min-Max Normalization")
@@ -116,13 +113,12 @@ def highlight_top(row):
 
 st.dataframe(utility.style.apply(highlight_top, axis=1))
 
-# Display the final MAUT Scores in a bar chart
-st.subheader("MAUT Scores Visualization")
-fig, ax = plt.subplots()
-ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
-ax.set_xlabel('MAUT Score')
-ax.set_title('Stock Ranking Based on MAUT Score')
-st.pyplot(fig)
+# **Ranking Chart** with Plotly
+st.subheader("Stock Ranking Based on MAUT Scores")
+fig = px.bar(utility, x="Stock", y="MAUT_Score", title="Stock Ranking Based on MAUT Score", labels={"MAUT_Score": "MAUT Score", "Stock": "Stock"},
+             color="MAUT_Score", color_continuous_scale="Viridis")
+fig.update_layout(xaxis={'categoryorder':'total descending'})
+st.plotly_chart(fig)
 
 # Download the results as CSV
 st.subheader("Download Result")
