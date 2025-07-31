@@ -47,15 +47,16 @@ for i, col in enumerate(criteria):
 if round(sum(weights), 3) != 1.0:
     st.warning("⚠️ The weights must sum to 1. Please adjust.")
 
-# Input impact — user controlled
+# Input impact — fixed with unique keys
 st.subheader("Select Impact for Each Criterion")
 impact = []
-for col in criteria:
+for i, col in enumerate(criteria):
     selected = st.radio(
         f"Is '{col}' a Benefit or Cost Criterion?",
         options=["Benefit (+)", "Cost (-)"],
         index=0,
-        horizontal=True
+        horizontal=True,
+        key=f"impact_{i}"
     )
     impact.append("+" if "Benefit" in selected else "-")
 
@@ -98,4 +99,12 @@ st.dataframe(utility.style.apply(highlight_top, axis=1))
 st.subheader("MAUT Scores Visualization")
 fig, ax = plt.subplots()
 ax.barh(utility['Stock'], utility['MAUT_Score'], color='skyblue')
-ax.set_xlab_
+ax.set_xlabel('MAUT Score')
+ax.set_title('Stock Ranking Based on MAUT Score')
+st.pyplot(fig)
+
+# Download CSV
+st.subheader("Download Result")
+def convert_df(df): return df.to_csv(index=False).encode('utf-8')
+csv = convert_df(utility)
+st.download_button("Download Results as CSV", csv, "maut_stock_results.csv", "text/csv")
