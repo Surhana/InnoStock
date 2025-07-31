@@ -65,13 +65,13 @@ for i, col in enumerate(criteria):
 st.subheader("Step 1: Min-Max Normalization")
 normalized = data.copy()
 
-# Debugging normalization step
+# Debug: Show normalization process
 for i, col in enumerate(criteria):
     x_min = data[col].min()
     x_max = data[col].max()
     
-    # Debug: Display min, max and the calculation for normalization
-    st.write(f"Column: {col}, Min: {x_min}, Max: {x_max}")
+    # Debugging: Check each column's min/max and print normalized values
+    st.write(f"Normalizing {col} - Min: {x_min}, Max: {x_max}")
     
     if x_max == x_min:
         normalized[col] = 1  # Avoid division by 0
@@ -86,8 +86,12 @@ st.dataframe(normalized)
 # Step 2: Weighted Normalized Matrix
 st.subheader("Step 2: Weighted Normalized Matrix")
 weighted = normalized.copy()
+
+# Debug: Show weighted matrix calculation
 for i, col in enumerate(criteria):
     weighted[col] = weighted[col] * weights[i]
+    st.write(f"Weighted {col} after applying weight {weights[i]}: {weighted[col].round(4)}")
+
 st.dataframe(weighted)
 
 # Step 3: MAUT Score and Ranking
